@@ -67,7 +67,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 ## 📅 Cronograma de trabajo
 
 
-[Carta Gantt](https://google.com)
+[Carta Gantt]([https://google.com](https://usmcl-my.sharepoint.com/:x:/r/personal/triquelme_usm_cl/_layouts/15/doc2.aspx?sourcedoc=%7B2A9A3214-9615-4D01-91DF-5A3443D31ACC%7D&file=Carta%20gantt.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&wdOrigin=APPHOME-WEB.DIRECT%2CAPPHOME-WEB.JUMPBACKIN&wdPreviousSession=3a335a0c-f018-47e1-a44e-cdf08c6902ff&wdPreviousSessionSrc=AppHomeWeb&ct=1744400917492))
 
 ---
 
