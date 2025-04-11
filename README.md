@@ -16,7 +16,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 📝 Descripción breve del proyecto
 
-> *Aquí va una descripción general del proyecto, incluyendo su propósito, contexto dentro del curso y motivación.*
+> Mikumpanion es una asistente virtual que puede acceder a los "smart things", dar la fecha y hora, y hacer de aistente virtual tipo Chat gpt, deepseek, copilot, etc.
 
 ---
 
