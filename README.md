@@ -12,7 +12,6 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 | valentina aguero  | @valechiquita      | vaguero@usm.cl           | 202430031-8  |
 | josue rojas       | @jjxdress          | jrojasgo@usm.cl          | 202530028-1  |
 
----   dfdf
 
 ## 📝 Descripción breve del proyecto
 
@@ -31,7 +30,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 🧩 Alcance del proyecto
 
-> *Definir qué aspectos cubre el proyecto y qué queda fuera del alcance (limitaciones).*
+> *Contestar preguntas simples, y resolver problemas matemáticos con voz de Miku.*
 
 ---
 
