@@ -4,13 +4,13 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 👥 Integrantes del grupo
 
-| Nombre y Apellido | Usuario GitHub   | Correo USM               | Rol          |
-| ----------------- | --------------   | ------------------------ | ------------ |
-| thomas filippi    | @kidt0m          | tfilippi@usm.cl          | 202530027-3  |
-| tomas riquelme    | @Tomi3005        | triquelme@usm.cl         | 202530034-6 |
-| vicente salgado   | @whodatboin      | nombre3.apellido3@usm.cl | 200000000000 |
-| Nombre4 Apellido4 | @usuario4      | nombre4.apellido4@usm.cl | 200000000000 |
-| Nombre4 Apellido4 | @usuario4      | nombre4.apellido4@usm.cl | 200000000000 |
+| Nombre y Apellido | Usuario GitHub     | Correo USM               | Rol          |
+| ----------------- | --------------     | ------------------------ | ------------ |
+| thomas filippi    | @kidt0m            | tfilippi@usm.cl          | 202530027-3  |
+| tomas riquelme    | @Tomi3005          | triquelme@usm.cl         | 202530034-6  |
+| vicente salgado   | @whodatboin        | vsalgadof@usm.cl         | 202530022-2  |
+| valentina aguero  | @valechiquita      | vaguero@usm.cl           | 202430031-8  |
+| josue rojas       | @jjxdress          | jrojasgo@usm.cl          | 202530028-1  |
 
 ---   dfdf
 
