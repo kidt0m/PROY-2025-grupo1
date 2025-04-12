@@ -15,17 +15,22 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 📝 Descripción breve del proyecto
 
-> Mikumpanion es una asistente virtual que puede acceder a los "smart things", dar la fecha y hora, y hacer de aistente virtual tipo Chat gpt, deepseek, copilot, etc.
+> Mikumpanion es una asistente virtual que puede dar la fecha y hora, hacer de asitente virtual tipo Chat gpt, deepseek, copilot, etc.
 
 ---
 
 ## 🎯 Objetivos
 
 - Objetivo general:
-  - *Describir el objetivo principal del proyecto.*
+  - *Crear un asistente virtual que sea capaz de hablar y escuchar.*
 - Objetivos específicos:
-  - *Listar objetivos concretos que permitirán alcanzar el objetivo general.*
-
+  - *Integrar Speech-to-text para inputear texto via mic al chatbot* 
+  - *Integrar Text-to-speech para darle voz al Mikumpanion*
+  - *Darle acceso a internet al chatbot*
+  - *Añadir salida y entrada de audio*
+  - *Añadir botones al diseño final para manejo simple*
+  - *Integrar Calendario y reloj*
+  - *Crear una interfaz visual medio decente*
 ---
 
 ## 🧩 Alcance del proyecto
