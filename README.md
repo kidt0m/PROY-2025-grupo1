@@ -42,11 +42,13 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 ## 🛠️ Tecnologías y herramientas utilizadas
 
 - Lenguaje(s) de programación:
-  - Ej: Python, JavaScript, C++
+  - Micro phyton
 - Microcontroladores
   - Raspberry Pi Pico W 2
 - Sensores
-
+Botón (pulsador)
+- Actuadores
+  Pantalla OLED 9E6045A0, Buzzer con oscilador 
 ---
 
 ## 🗂️ Estructura del repositorio
