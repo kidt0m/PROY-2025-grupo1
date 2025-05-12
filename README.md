@@ -46,9 +46,9 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 - Microcontroladores
   - Raspberry Pi Pico W 2
 - Sensores
-Botón (pulsador)
+  - Botón (pulsador)
 - Actuadores
-  Pantalla OLED 9E6045A0, Buzzer con oscilador 
+  - Pantalla OLED 9E6045A0, Buzzer con oscilador 
 ---
 
 ## 🗂️ Estructura del repositorio
