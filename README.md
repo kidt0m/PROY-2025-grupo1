@@ -78,7 +78,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 📚 Bibliografía
 
-[Enlace](https://google.com)
+[Image2cpp](https://javl.github.io/image2cpp/) (Image generator for oled screen)
 
 ---
 
