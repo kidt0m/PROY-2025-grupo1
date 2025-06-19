@@ -1,0 +1,5 @@
+from TTS.api import TTS
+tts = TTS(model_name="tts_models/en/ljspeech/vits")  # voz en ingles!!!!!!!
+tts.tts_to_file(text="Tomas riquelme cobarde, cagon desgraciado, if you can hear this, the script is working. Horray!!!", file_path="output.wav")
+
+#En un futuro estaria bueno hacer que funcione en español, que miku hable español es medio cursed si, ya veremos dijo el ciego
