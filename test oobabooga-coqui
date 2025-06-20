@@ -1,0 +1,59 @@
+import requests
+from TTS.api import TTS
+import sounddevice as sd
+import numpy as np
+
+# Confi
+OOBABOOGA_URL = "http://127.0.0.1:5000"  # port default no toketear mucho
+API_ENDPOINT = f"{OOBABOOGA_URL}/v1/chat/completions"
+COQUI_MODEL = "tts_models/en/ljspeech/glow-tts"
+
+def get_short_response(prompt):
+    """CONSEGUIR RESPUESTA CONCISA PARA ASEGURAR VELOCIDAD, NO HACE MUCHA GRACIA QUE SE DEMORE 3 MINUTOS"""
+    try:
+        response = requests.post(
+            API_ENDPOINT,
+            json={
+                "messages": [{"role": "user", "content": f"Respond briefly (1-10 sentences max): {prompt}"}],
+                "temperature": 0.7,
+                "max_tokens": 200, 
+                "model": "text-generation",
+                "stop": ["\n", ".", "?"]
+            },
+            headers={"Content-Type": "application/json"},
+            timeout=60  # SI TIMEOUTEA SUBIR LIMITE, HAY KE SER PACIENTE CON LA MAKINA
+        )
+        data = response.json()
+        reply = data['choices'][0]['message']['content']
+        return reply.split('.')[0] + '.'  
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def speak(text):
+    """PASAR A AUDIO (TTS JJJJJJJ)"""
+    try:
+        tts = TTS(COQUI_MODEL)
+        audio = tts.tts(text=text)
+        sd.play(np.array(audio), samplerate=22050)
+        sd.wait()
+    except Exception as e:
+        print(f"TTS Error: {str(e)}")
+
+if __name__ == "__main__":
+    print("HABLALE AL BOT!!")
+    print("Type your message (or 'quit' to exit)\n")
+    
+    while True:
+        try:
+            user_input = input("You: ")
+            if user_input.lower() in ("quit", "exit"):
+                break
+                
+            print("Generando respuesta!!!")
+            response = get_short_response(user_input)
+            print(f"Bot: {response}")
+            speak(response)
+            
+        except KeyboardInterrupt:
+            print("\nchaochao")
+            break
