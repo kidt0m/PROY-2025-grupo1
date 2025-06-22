@@ -1,0 +1,17 @@
+from machine import Pin, I2C
+import ssd1306
+
+# Inicializar I2C
+i2c = I2C(1, scl=Pin(5), sda=Pin(4))
+
+# Confirmar dirección
+devices = i2c.scan()
+print("Dispositivos encontrados:", devices)
+
+if 0x3C in devices:
+    oled = ssd1306.SSD1306_I2C(128, 64, i2c, addr=0x3C)
+    oled.fill(0)
+    oled.text("\n hola chao\n hola muendo!", 0, 56 )
+    oled.show()
+else:
+    print("\n chao \n Pantalla no encontrada en I2C.")
