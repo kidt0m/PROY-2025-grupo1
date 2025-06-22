@@ -1,0 +1,19 @@
+from machine import Encoder
+from time import sleep
+from machine import Pin, PWM
+
+brake = Pin (26, Pin.OUT)
+pwm = PWM(Pin(25))
+dir = Pin(27, Pin.OUT)
+dir.value(1)
+
+brake.on()
+pwm.duty(980)
+
+enc = Encoder(32,33,False,1)
+while True:
+    print (enc. position)
+    sleep(1)
+    brake.off()
+    dir.value(not dir.value())
+    brake.on()
