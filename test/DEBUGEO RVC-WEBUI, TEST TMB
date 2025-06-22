@@ -1,0 +1,121 @@
+import os
+import requests
+import numpy as np
+import soundfile as sf
+from pathlib import Path
+
+# CONFIG, SI NO ENTIENDES COMO LLENAR HABLARME AL IG
+RVC_PORT = 7897
+MODEL_NAME = "model"
+INPUT_WAV = r"D:\mpv3\input.wav"         # Must be 22050Hz mono WAV
+OUTPUT_WAV = r"D:\mpv3\output_rvc.wav"   # Output file path
+
+# RVC, NO MOVER NADA!!!!! (EN VOLA EL SPEAKER ID SI TIENES MAS DE 1 MODELO, PERO PA QUE QUIERES MAS DE UN MODELO????????)
+RVC_PARAMS = {
+    "speaker_id": 0,
+    "pitch_shift": 0,
+    "f0_method": "harvest",
+    "index_rate": 0.75,
+    "protect": 0.33,
+    "filter_radius": 3,
+    "resample_sr": 0,
+    "rms_mix_rate": 0.25,
+    "timeout": 300
+}
+
+def validate_audio(path):
+    try:
+        with sf.SoundFile(path) as f:
+            if f.samplerate != 22050:
+                print(f"TU AUDIO ESTA A {f.samplerate}Hz, NECESITAMOS 22050Hz)")
+                return False
+            if f.channels != 1:
+                print(f"TU AUDIO NO ES MONO, TIENE {f.channels} CANALES, EL RVC SE ROMPE CON STEREO!!)")
+                return False
+        return True
+    except Exception as e:
+        print(f"ALGO ESTA MAL CON TU WAV, STRING --> {str(e)}")
+        return False
+
+def handle_rvc_response(response):
+    try:
+        if response.status_code == 200:
+            response_data = response.json()
+            if isinstance(response_data, dict) and "data" in response_data:
+                if len(response_data["data"]) >= 2 and isinstance(response_data["data"][1], dict):
+                    temp_path = response_data["data"][1]["name"]
+                    if temp_path and os.path.exists(temp_path):
+                        audio, sr = sf.read(temp_path)
+                        return audio, sr
+                
+            audio = np.frombuffer(response.content, dtype=np.float32)
+            return audio, 44100
+            
+        print(f"ERROR DE RVC, CRISTO SE APIADE DE NOSOTROS {response.status_code}: {response.text}")
+        return None, None
+    except Exception as e:
+        print(f"ERROR DE RVC -> {str(e)}")
+        return None, None
+
+def convert_audio():
+    print("LA GRAN MIKU-FICACION")
+    print(f"Input: {INPUT_WAV}")
+    print(f"Model: {MODEL_NAME}")
+    print(f"Output: {OUTPUT_WAV}\n")
+
+    if not validate_audio(INPUT_WAV):
+        return False
+
+    payload = {
+        "data": [
+            RVC_PARAMS["speaker_id"],
+            str(Path(INPUT_WAV).absolute()),
+            RVC_PARAMS["pitch_shift"],
+            None,
+            RVC_PARAMS["f0_method"],
+            "",
+            str(Path(f"logs/{MODEL_NAME}.index").absolute()),
+            RVC_PARAMS["index_rate"],
+            RVC_PARAMS["filter_radius"],
+            RVC_PARAMS["resample_sr"],
+            RVC_PARAMS["rms_mix_rate"],
+            RVC_PARAMS["protect"]
+        ]
+    }
+
+    try:
+        print("COCINANDO")
+        response = requests.post(
+            f"http://127.0.0.1:{RVC_PORT}/run/infer_convert",
+            json=payload,
+            headers={"Content-Type": "application/json"},
+            timeout=RVC_PARAMS["timeout"]
+        )
+
+        audio, sr = handle_rvc_response(response)
+        if audio is not None:
+            if len(audio) % 2 != 0:
+                audio = audio[:-1]
+                
+            peak = np.max(np.abs(audio))
+            if peak > 0:
+                audio = (audio / peak) * 0.95
+                
+            sf.write(OUTPUT_WAV, audio, sr, subtype='PCM_16')
+            print(f"\nOWAO!! FUNCIONO!! GUARDADO EN: {OUTPUT_WAV}")
+            return True
+            
+        return False
+
+    except requests.exceptions.Timeout:
+        print("\nTIMEOUT!! SUBIR TIEMPO!! :p")
+        return False
+    except Exception as e:
+        print(f"\nERROR, LEER -> {str(e)}")
+        return False
+
+if __name__ == "__main__":
+    if convert_audio():
+        print("\nSE DIO TODO!!! YIPEEEE!!")
+    else:
+        print("\nMIRA EL CMD DE RVC WEBUI, ALGO SALIO MAL, CHILENOS Y CHILENAS CORRAN A LOS CERROS EL FIN DE LOS TIEMPOS SE ACERCA!!!!!")
