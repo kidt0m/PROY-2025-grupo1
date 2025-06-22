@@ -1,0 +1,17 @@
+from machine import Pin, ADC
+from time import sleep
+
+VCC = 3.3      # Voltaje de referencia (puede ser 3.3V si no usas un divisor de tensión)
+GND = 0.0
+ADC_MAX = 4095
+adc_value = sensor_pin.read()  # Lee en 12 bits (0-4095)
+
+# Configura el pin ADC (GP26 = ADC0, GP27 = ADC1, etc.)
+sensor_pin = ADC(Pin(26))  # Conectar el sensor a GP26 (físico pin 31)
+
+while True:
+    # Leer valor analógico (0-65535) y convertirlo a voltaje
+    adc_value = sensor_pin.read_u16()  # Usamos read_u16() para mejor resolución
+    voltage = GND + VCC * (adc_value / ADC_MAX)
+    print("Voltaje:", voltage, "V")
+    sleep(1)  # Pequeña pausa para no saturar la salida
