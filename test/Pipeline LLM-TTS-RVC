@@ -1,0 +1,165 @@
+import requests
+from TTS.api import TTS
+import sounddevice as sd
+import numpy as np
+import soundfile as sf
+from pathlib import Path
+
+# Dato curioso, este .py se llama 123FUSION.py en mi pc, pero entre en razon que era muy poco serio para subirlo asi como asi, si estas revisando el codigo mereces saberlo LOL
+# Oobabooga config
+OOBABOOGA_URL = "http://127.0.0.1:5000" # port default no toketear mucho
+API_ENDPOINT = f"{OOBABOOGA_URL}/v1/chat/completions"
+COQUI_MODEL = "tts_models/en/ljspeech/glow-tts"
+
+# RVC, NO MOVER NADA!!!!! (EN VOLA EL SPEAKER ID SI TIENES MAS DE 1 MODELO, PERO PA QUE QUIERES MAS DE UN MODELO????????)
+RVC_PORT = 7897 # RVC, tmb puerto main no toketear (a no ser que lo quieras cambiar, no me hace mucho sentido pero puedes!!!!!!!!!)
+MODEL_NAME = "model"
+TTS_OUTPUT_WAV = "output_coqui.wav"       # TTS output
+RVC_OUTPUT_WAV = "output_rvc.wav"        # RVC output
+
+# RVC parameters
+RVC_PARAMS = {
+    "speaker_id": 0,
+    "pitch_shift": 0,
+    "f0_method": "harvest",
+    "index_rate": 0.75,
+    "protect": 0.33,
+    "filter_radius": 3,
+    "resample_sr": 0,
+    "rms_mix_rate": 0.25,
+    "timeout": 300
+}
+
+    try:
+        response = requests.post(
+            API_ENDPOINT,
+            json={
+                "messages": [{"role": "user", "content": f"Respond briefly (1-10 sentences max): {prompt}"}],
+                "temperature": 0.7,
+                "max_tokens": 200,
+                "model": "text-generation",
+                "stop": ["\n", ".", "?"]
+            },
+            headers={"Content-Type": "application/json"},
+            timeout=60
+        )
+        data = response.json()
+        reply = data['choices'][0]['message']['content']
+        return reply.split('.')[0] + '.'  
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def generate_tts(text):
+    try:
+        tts = TTS(COQUI_MODEL)
+        audio = tts.tts(text=text)
+        audio_np = np.array(audio)
+        
+        sf.write(TTS_OUTPUT_WAV, audio_np, 22050, subtype='PCM_16')
+        print(f"Saved TTS output to: {TTS_OUTPUT_WAV}")
+        return True
+    except Exception as e:
+        print(f"TTS Error: {str(e)}")
+        return False
+
+def validate_audio(path):
+    try:
+        with sf.SoundFile(path) as f:
+            if f.samplerate != 22050:
+                print(f"vTU AUDIO ESTA A {f.samplerate}Hz, NECESITAMOS 22050Hz")
+                return False
+            if f.channels != 1:
+                print(f"TU AUDIO NO ES MONO, TIENE {f.channels} CANALES, EL RVC SE ROMPE CON STEREO!!")
+                return False
+        return True
+    except Exception as e:
+        print(f"Error validating WAV: {str(e)}")
+        return False
+
+def process_with_rvc():
+    if not validate_audio(TTS_OUTPUT_WAV):
+        return False
+
+    payload = {
+        "data": [
+            RVC_PARAMS["speaker_id"],
+            str(Path(TTS_OUTPUT_WAV).absolute()),
+            RVC_PARAMS["pitch_shift"],
+            None,
+            RVC_PARAMS["f0_method"],
+            "",
+            str(Path(f"logs/{MODEL_NAME}.index").absolute()),
+            RVC_PARAMS["index_rate"],
+            RVC_PARAMS["filter_radius"],
+            RVC_PARAMS["resample_sr"],
+            RVC_PARAMS["rms_mix_rate"],
+            RVC_PARAMS["protect"]
+        ]
+    }
+
+    try:
+        print("Miku-ficando (RVC)")
+        response = requests.post(
+            f"http://127.0.0.1:{RVC_PORT}/run/infer_convert",
+            json=payload,
+            headers={"Content-Type": "application/json"},
+            timeout=RVC_PARAMS["timeout"]
+        )
+
+        if response.status_code == 200:
+            response_data = response.json()
+            if isinstance(response_data, dict) and "data" in response_data:
+                if len(response_data["data"]) >= 2 and isinstance(response_data["data"][1], dict):
+                    temp_path = response_data["data"][1]["name"]
+                    if temp_path and Path(temp_path).exists():
+                        audio, sr = sf.read(temp_path)
+                        # Normalize and save
+                        peak = np.max(np.abs(audio))
+                        if peak > 0:
+                            audio = (audio / peak) * 0.95
+                        sf.write(RVC_OUTPUT_WAV, audio, sr, subtype='PCM_16')
+                        print(f"Output del rvc en: {RVC_OUTPUT_WAV}")
+                        return True
+        
+        print(f"RVC Error: {response.status_code}: {response.text}")
+        return False
+
+    except requests.exceptions.Timeout:
+        print("TIMEOUT!! Subir el tiempo o cerrar cosas para que el pc vaya mas rapido")
+        return False
+    except Exception as e:
+        print(f"RVC Error: {str(e)}")
+        return False
+
+def play_audio(file_path):
+    "Hacer sonar el audio"
+    try:
+        audio, sr = sf.read(file_path)
+        sd.play(audio, samplerate=sr)
+        sd.wait()
+    except Exception as e:
+        print(f"error, String -> {str(e)}")
+
+# ====== MAIN LOOP ======
+if __name__ == "__main__":
+    print("PIPELINE - Oobabooga (LLM) -> Coqui (TTS) -> RVC(ADIVINA VRO)")
+    print("Habla con el bot!!)\n")
+    
+    while True:
+        try:
+            user_input = input("Tu: ")
+            if user_input.lower() in ("quit", "exit"):
+                break
+                
+            print("Generando respuesta!!")
+            response = get_short_response(user_input)
+            print(f"Bot: {response}")
+            
+            if generate_tts(response):
+                if process_with_rvc():
+                    print("NOW PLAYING!!")
+                    play_audio(RVC_OUTPUT_WAV)
+            
+        except KeyboardInterrupt:
+            print("\nExiting...")
+            break
