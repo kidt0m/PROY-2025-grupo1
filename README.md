@@ -1,4 +1,4 @@
-# PROY-2025-GRUPO1
+ c # PROY-2025-GRUPO1
 
 Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
@@ -81,6 +81,11 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 ## 📚 Bibliografía
 
 [Image2cpp](https://javl.github.io/image2cpp/) (Image generator for oled screen)
+[Raspberry Pi Pico 2w pinout](https://datasheets.raspberrypi.com/picow/pico-2-w-pinout.pdf)
+[Oled screen code-help](https://electronoobs.com/eng_arduino_tut138.php)
+[Oled screen library](https://docs.arduino.cc/libraries/adafruit-ssd1306/)
+[AI chat for help](https://chat.deepseek.com/) (Deepseek)
+[Second AI chat for help](https://chatgpt.com/?model=auto) (Chat gpt)
 
 ---
 
