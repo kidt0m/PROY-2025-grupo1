@@ -1,0 +1,20 @@
+font:
+    - file: "fonts/Helvetica.ttf"
+      id: helvetica_sm
+      size: 16
+    - file: "gfonts://Roboto"
+      id: roboto
+      size: 18
+
+i2c:
+    sda: 34
+    scl: 32
+
+display:
+    - platform: ssd1306_i2c
+      model: "SH1106_128x64"
+      # reset_pin: D0
+      address: 0x3C
+      lambda: |-
+        it.print(0, 4, id(roboto), "Hello Planet!");
+        it.print(2, 40, id(helvetica_sm), "Hello World!");
