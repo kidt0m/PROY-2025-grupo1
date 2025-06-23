@@ -1,0 +1,25 @@
+import network 
+# Función para conectar a Wi-Fi
+def conectar_wifi():
+    with open('config.json') as archivo:
+        configuracion = json.load(archivo)
+
+    #identificar ssid y password
+ssid = '[Nombre del wifi]'
+password = '[Contraseña del wifi]'
+
+# establecer el wlan:
+class WifiConnect():
+    def connect () :
+        try:
+            wlan = network.WLAN(network.STA_IF)
+            wlan.active(True)
+            wlan.connect(ssid, password)
+            while wlan.isconnected() == False:
+                print ('[WLAN] esperando la conexión....')
+                sleep(1)
+                
+            ip = wlan.ifconfig() [0]
+            print(f'[WLAN] Connected on = {ip}');  
+        except:
+            print('algo va horrible')
