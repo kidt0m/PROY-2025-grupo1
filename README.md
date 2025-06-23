@@ -142,7 +142,7 @@ enjoy!
 
 ## 📌 Notas adicionales
 
-> Quedó pendiente conectar un altavoz y micrófono a la raspi para que no dependiera directamente del PC
+- Quedó pendiente conectar un altavoz y micrófono a la raspi para que no dependiera directamente del PC
 
 ---
 
