@@ -51,6 +51,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
   - Microfono (PC)
 - Actuadores
   - Pantalla OLED 9E6045A0
+  - Parlante (bluetooth)
 - Librerías
   - utime
   - json
