@@ -1,0 +1,241 @@
+import warnings
+import whisper
+import sounddevice as sd
+import numpy as np
+from scipy.io.wavfile import write
+import requests
+from TTS.api import TTS
+import soundfile as sf
+from pathlib import Path
+import os
+import socket
+import json
+
+# uis configs
+OOBABOOGA_URL = "http://127.0.0.1:5000"
+COQUI_MODEL = "tts_models/en/ljspeech/glow-tts"
+RVC_PORT = 7897
+MODEL_NAME = "model"
+
+#Archivos temporales!!
+TTS_OUTPUT_WAV = "temp_coqui.wav"
+RVC_OUTPUT_WAV = "temp_rvc.wav"
+WHISPER_TEMP = "temp_whisper.wav"
+
+# RVC, NO MOVER NADA!!!!! (EN VOLA EL SPEAKER ID SI TIENES MAS DE 1 MODELO, PERO PA QUE QUIERES MAS DE UN MODELO????????)
+RVC_PARAMS = {
+    "speaker_id": 0,
+    "pitch_shift": 0,
+    "f0_method": "harvest",
+    "index_rate": 0.75,
+    "protect": 0.33,
+    "filter_radius": 3,
+    "resample_sr": 0,
+    "rms_mix_rate": 0.25,
+    "timeout": 300
+}
+
+warnings.filterwarnings("ignore", message="FP16 is not supported on CPU")
+
+def clean_message(text):
+    """Remove extra quotes and newlines from Oobabooga's response."""
+    return text.strip('"').strip()
+
+def send_to_pico(message, pico_ip="192.168.0.6", pico_port=5005):
+    """Send a cleaned message to the Pico via WiFi."""
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(5)
+            s.connect((pico_ip, pico_port))
+            payload = json.dumps({"text": message})
+            s.sendall(payload.encode('utf-8'))
+            print(f"Sent to Pico: {message[:50]}...")  # Show preview
+    except Exception as e:
+        print(f"PC send error: {e}")
+
+def record_audio(duration=5, sample_rate=16000):
+    "Graba audio para whisper"
+    print(f"\nActualmente grabando audio por {duration} segundos")
+    audio = sd.rec(int(duration * sample_rate),
+                  samplerate=sample_rate,
+                  channels=1,
+                  dtype='float32')
+    sd.wait()
+    return audio.flatten()
+
+def transcribe_audio(audio_data, sample_rate):
+    "Transcripcion de audio via whispr"
+    write(WHISPER_TEMP, sample_rate, audio_data)
+    
+    model = whisper.load_model("base", device="cpu")
+    result = model.transcribe(WHISPER_TEMP, fp16=False, temperature=0.2)
+    
+    os.remove(WHISPER_TEMP)
+    return result["text"].strip()
+
+def get_short_response(prompt):
+    "oobabooga, aqui entra el prompt de whisper!!"
+    try:
+        response = requests.post(
+            f"{OOBABOOGA_URL}/v1/chat/completions",
+            json={
+                "messages": [{"role": "user", "content": f"Respond briefly (1-90 sentences max): {prompt}"}],
+                "temperature": 0.7,
+                "max_tokens": 200,
+                "model": "text-generation",
+                "stop": ["\n", ".", "?"]
+            },
+            headers={"Content-Type": "application/json"},
+            timeout=60
+        )
+        data = response.json()
+        reply = data['choices'][0]['message']['content']
+        return reply.split('.')[0] + '.'  
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+def validate_audio(path):
+    try:
+        with sf.SoundFile(path) as f:
+            if f.samplerate != 22050:
+                print(f"TU AUDIO ESTA A {f.samplerate}Hz, NECESITAMOS 22050Hz")
+                return False
+            if f.channels != 1:
+                print(f"TU AUDIO NO ES MONO, TIENE {f.channels} CANALES, EL RVC SE ROMPE CON STEREO!!")
+                return False
+        return True
+    except Exception as e:
+        print(f"error!! --> {str(e)}")
+        return False
+
+def generate_tts(text):
+    try:
+        tts = TTS(COQUI_MODEL)
+        audio = tts.tts(text=text)
+        audio_np = np.array(audio)
+        
+        sf.write(TTS_OUTPUT_WAV, audio_np, 22050, subtype='PCM_16')
+        print(f"Se genero TTS: {TTS_OUTPUT_WAV}")
+        return True
+    except Exception as e:
+        print(f"error!! D: -> {str(e)}")
+        return False
+
+def process_with_rvc():
+    if not validate_audio(TTS_OUTPUT_WAV):
+        return False
+
+    payload = {
+        "data": [
+            RVC_PARAMS["speaker_id"],
+            str(Path(TTS_OUTPUT_WAV).absolute()),
+            RVC_PARAMS["pitch_shift"],
+            None,
+            RVC_PARAMS["f0_method"],
+            "",
+            str(Path(f"logs/{MODEL_NAME}.index").absolute()),
+            RVC_PARAMS["index_rate"],
+            RVC_PARAMS["filter_radius"],
+            RVC_PARAMS["resample_sr"],
+            RVC_PARAMS["rms_mix_rate"],
+            RVC_PARAMS["protect"]
+        ]
+    }
+
+    try:
+        print("MIKU-FICANDO!! (aka, rvc)")
+        response = requests.post(
+            f"http://127.0.0.1:{RVC_PORT}/run/infer_convert",
+            json=payload,
+            headers={"Content-Type": "application/json"},
+            timeout=RVC_PARAMS["timeout"]
+        )
+
+        if response.status_code == 200:
+            response_data = response.json()
+            if isinstance(response_data, dict) and "data" in response_data:
+                if len(response_data["data"]) >= 2 and isinstance(response_data["data"][1], dict):
+                    temp_path = response_data["data"][1]["name"]
+                    if temp_path and Path(temp_path).exists():
+                        audio, sr = sf.read(temp_path)
+                        peak = np.max(np.abs(audio))
+                        if peak > 0:
+                            audio = (audio / peak) * 0.95
+                        sf.write(RVC_OUTPUT_WAV, audio, sr, subtype='PCM_16')
+                        print(f"Generated RVC: {RVC_OUTPUT_WAV}")
+                        os.remove(temp_path)
+                        return True
+        
+        print(f"RVC Error: {response.status_code}: {response.text}")
+        return False
+
+    except requests.exceptions.Timeout:
+        print("TIMEOUT!! Subir el tiempo o cerrar cosas para que el pc vaya mas rapido")
+        return False
+    except Exception as e:
+        print(f"Error!! --> {str(e)}")
+        return False
+
+def play_audio(file_path):
+    try:
+        audio, sr = sf.read(file_path)
+        sd.play(audio, samplerate=sr)
+        sd.wait()
+    except Exception as e:
+        print(f"Playback Error: {str(e)}")
+
+class NetworkSender:
+    def __init__(self, pico_ip, pico_port=5005):
+        self.pico_ip = pico_ip
+        self.pico_port = pico_port
+    
+    def send_to_pico(self, text):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect((self.pico_ip, self.pico_port))
+                data = {"text": text}
+                s.sendall(json.dumps(data).encode('utf-8'))
+        except Exception as e:
+            print(f"Failed to send to Pico: {e}")
+
+def cleanup():
+    for f in [WHISPER_TEMP, TTS_OUTPUT_WAV, RVC_OUTPUT_WAV]:
+        try:
+            os.remove(f)
+        except:
+            pass
+
+def main():
+    print("MIKUMPANION V1")
+    print("Hablale al bot!! (Cerrar via ctrl+c, si lo cierras con altf4 borra los temps manualmente!!)\n")
+    
+    try:
+        while True:
+            audio = record_audio()
+            print("DECIFRANDO TUS PALARAS")
+            user_input = transcribe_audio(audio, 16000)
+            print(f"\nENTENDIMOS QUE DIJISTE: {user_input}")
+            
+            if not user_input.strip():
+                print("NO SE DETECTO AUDIO, REVISA EL MICRO (O HABLA, COBARDE)")
+                continue
+                
+            print("GENERANDO RESPUESTA")
+            response = get_short_response(user_input)
+            print(f"Bot: {response}")
+            
+            # Send to Pico display via WiFi
+            send_to_pico(response)
+            
+            if generate_tts(response):
+                if process_with_rvc():
+                    print("MIKU-RESPUESTA!!")
+                    play_audio(RVC_OUTPUT_WAV)
+            
+    except KeyboardInterrupt:
+        print("CHAO CHAO!!")
+    finally:
+        cleanup()
+
+if __name__ == "__main__":
+    main()
