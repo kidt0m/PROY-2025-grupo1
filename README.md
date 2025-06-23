@@ -1,5 +1,5 @@
  c # PROY-2025-GRUPO1
- -[Video](https://youtu.be/eqSqwnYvb80)
+
 Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 👥 Integrantes del grupo
