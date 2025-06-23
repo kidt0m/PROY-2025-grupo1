@@ -149,3 +149,4 @@ enjoy!
 ## Limitaciones
 Almacencamiento
 Configuración en ingles (única opción)
+Puede realizar una acción a la vez
