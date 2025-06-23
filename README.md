@@ -35,7 +35,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 🧩 Alcance del proyecto
 
-> *Contestar preguntas simples, y resolver problemas matemáticos con voz de Miku.*
+> Contestar preguntas simples, y resolver problemas matemáticos con voz de Miku.
 
 ---
 
