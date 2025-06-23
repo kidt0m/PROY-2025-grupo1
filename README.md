@@ -147,3 +147,4 @@ enjoy!
 ---
 
 ## Limitaciones
+Configuración en ingles (única opción)
