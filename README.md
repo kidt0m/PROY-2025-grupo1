@@ -48,7 +48,15 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 - Sensores
   - Botón (pulsador)
 - Actuadores
-  - Pantalla OLED 9E6045A0, Buzzer con oscilador 
+  - Pantalla OLED 9E6045A0, Buzzer con oscilador
+- Librerías
+  - utime
+  - json
+  - network
+  - urequests
+  - framebuf
+  - ssd1306 (SSD1306_I2C)
+  - machine
 ---
 
 ## 🗂️ Estructura del repositorio
