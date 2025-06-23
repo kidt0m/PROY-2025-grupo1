@@ -148,3 +148,4 @@ enjoy!
 
 ## Limitaciones
 Almacencamiento
+Configuración en ingles (única opción)
