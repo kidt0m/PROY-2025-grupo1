@@ -147,6 +147,8 @@ enjoy!
 ---
 
 ## Limitaciones
-Almacencamiento
-Configuración en ingles (única opción)
-Puede realizar una acción a la vez
+- Almacencamiento
+- Configuración en ingles (única opción)
+- Puede realizar una acción a la vez
+- Configuración
+- Solo ha sido probado por altavoz de PC
