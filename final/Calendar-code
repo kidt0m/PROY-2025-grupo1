@@ -1,0 +1,46 @@
+from machine  import Pin, I2C
+from ssd1306  import SSD1306_I2C  
+import utime  
+import ntptime  
+import network  
+import calendar 
+
+ # Configuración de la pantalla OLED 
+WIDTH = 128 HEIGHT = 64 i2c = I2C(0, scl=Pin(22), sda=Pin(21))  
+
+display = SSD1306_I2C(WIDTH, HEIGHT, i2c)  
+
+# Conectar a WiFi para obtener la hora desde 
+ NTP SSID = "TU_SSID" PASSWORD = "TU_PASSWORD"  
+
+def conectar_wifi(): wlan = network.WLAN(network.STA_IF) wlan.active(True)
+wlan.connect(SSID, PASSWORD)
+while not wlan.isconnected():
+    pass print("Conectado a WiFi")
+    ntptime.settime() conectar_wifi()
+    def obtener_tiempo():
+        t = utime.localtime()
+        hora = "{:02}:{:02}:{:02}".format(t[3], t[4], t[5])
+        fecha = "{:02}-{:02}-{:02}".format(t[2], t[1], t[0])
+        dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+        dia = dias[t[6]]
+        return hora, dia, fecha
+    def actualizar_pantalla():
+        while True:
+            display.fill(0) hora, dia, fecha = obtener_tiempo()
+            display.text(hora, 10, 10)
+            display.text(dia, 10, 30)
+            display.text(fecha, 10, 50)
+            display.show() utime.sleep(1)
+            def mostrar_calendario():
+                anio = 2025 mes = 1
+                while True:
+                    display.fill(0)
+                    display.text("Calendario", 10, 0)
+                    display.text("{}-{:02}".format(anio, mes), 10, 10)
+                    dias_mes = calendar.monthrange(anio, mes)[1]
+                    for d in range(1, min(dias_mes + 1, 7)):
+                        display.text("{:02}".format(d), 10 + (d - 1) * 15, 30)
+                        display.show()
+                        utime.sleep(2) mes += 1 if mes > 12: mes = 1 anio += 1
+                        # Para mostrar la hora, descomenta esta línea # actualizar_pantalla() # Para mostrar el calendario, descomenta esta línea # mostrar_calendario() 
