@@ -147,7 +147,7 @@ enjoy!
 ---
 
 ## Limitaciones
-- Almacencamiento
+- Almacencamiento limitado
 - Configuración en ingles (única opción)
 - Puede realizar una acción a la vez
 - Configuración
