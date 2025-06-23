@@ -15,7 +15,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 📝 Descripción breve del proyecto
 
-> Mikumpanion es una asistente virtual que puede dar la fecha y hora, hacer de asitente virtual tipo Chat gpt, deepseek, copilot, etc.
+> Mikumpanion es una asistente virtual con text-to-speech, speech-to-text (para hablarle) y capacidades QOL secundarias
 
 ---
 
@@ -42,13 +42,15 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 ## 🛠️ Tecnologías y herramientas utilizadas
 
 - Lenguaje(s) de programación:
-  - Micro phyton
+  - Micro python
+  - python 1.11
 - Microcontroladores
   - Raspberry Pi Pico W 2
 - Sensores
   - Botón (pulsador)
+  - Microfono (PC)
 - Actuadores
-  - Pantalla OLED 9E6045A0, Buzzer con oscilador
+  - Pantalla OLED 9E6045A0
 - Librerías
   - utime
   - json
@@ -57,7 +59,13 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
   - framebuf
   - ssd1306 (SSD1306_I2C)
   - machine
----
+  - whisper
+  - sounddevice
+  - numpy
+  - scipy
+  - requests
+  - TTS
+  - soundfile
 
 ## 🗂️ Estructura del repositorio
 
