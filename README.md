@@ -151,6 +151,7 @@ enjoy!
 - Puede realizar una acción a la vez
 - Solo ha sido probado por altavoz de PC
 - Solo ha sido probado por microfono de PC
+- La conexión con internet tiene unos requisitos muy particulares
 
 ---
 
