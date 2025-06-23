@@ -1,3 +1,4 @@
+# PROY-2025-GRUPO1
 Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 👥 Integrantes del grupo
@@ -153,5 +154,4 @@ enjoy!
 
 ---
 
- c # PROY-2025-GRUPO1
 Video del mikumpanion: https://youtu.be/bkeT-Qbxxj0
