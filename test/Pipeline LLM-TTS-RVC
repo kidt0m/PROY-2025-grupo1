@@ -30,6 +30,7 @@ RVC_PARAMS = {
     "timeout": 300
 }
 
+def get_short_response(prompt): #esta parte la borre en el primer copypaste del pc al github, no se como pasó, ahi ta arreglado si!!!!!!!!
     try:
         response = requests.post(
             API_ENDPOINT,
