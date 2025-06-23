@@ -144,3 +144,7 @@ enjoy!
 ## 📌 Notas adicionales
 
 > *Espacio para dejar cualquier comentario útil, como pendientes, acuerdos del grupo, consideraciones especiales, etc.*
+
+---
+
+## Limitaciones
