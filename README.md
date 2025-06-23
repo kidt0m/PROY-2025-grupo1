@@ -142,7 +142,7 @@ enjoy!
 
 ## 📌 Notas adicionales
 
-> *Espacio para dejar cualquier comentario útil, como pendientes, acuerdos del grupo, consideraciones especiales, etc.*
+> Quedó pendiente conectar un altavoz y micrófono a la raspi para que no dependiera directamente del PC
 
 ---
 
