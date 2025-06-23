@@ -6,16 +6,16 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 | Nombre y Apellido | Usuario GitHub     | Correo USM               | Rol          |
 | ----------------- | --------------     | ------------------------ | ------------ |
-| thomas filippi    | @kidt0m            | tfilippi@usm.cl          | 202530027-3  |
-| tomas riquelme    | @Tomi3005          | triquelme@usm.cl         | 202530034-6  |
-| vicente salgado   | @whodatboin        | vsalgadof@usm.cl         | 202530022-2  |
-| valentina aguero  | @valechiquita      | vaguero@usm.cl           | 202430031-8  |
-| josue rojas       | @jjxdress          | jrojasgo@usm.cl          | 202530028-1  |
+| Thomas Filippi    | @kidt0m            | tfilippi@usm.cl          | 202530027-3  |
+| Tomás Riquelme    | @Tomi3005          | triquelme@usm.cl         | 202530034-6  |
+| Vicente Salgado   | @whodatboin        | vsalgadof@usm.cl         | 202530022-2  |
+| Valentina Agüero  | @valechiquita      | vaguero@usm.cl           | 202430031-8  |
+| Josué Rojas       | @jjxdress          | jrojasgo@usm.cl          | 202530028-1  |
 
 
 ## 📝 Descripción breve del proyecto
 
-> Mikumpanion es una asistente virtual con text-to-speech, speech-to-text (para hablarle) y capacidades QOL secundarias
+ Mikumpanion es una asistente virtual con text-to-speech, speech-to-text (para hablarle) y capacidades QOL secundarias
 
 ---
 
