@@ -133,7 +133,7 @@ enjoy!
  -[Second AI chat for help](https://chatgpt.com/?model=auto) (Chat gpt)
  -[Oogabooga (Chatbot)](https://docs.arduino.cc/libraries/adafruit-ssd1306/)
  -[Coqui-ai](https://github.com/coqui-ai/TTS)
- -[RVC-Webui]([https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/](https://github.com/oobabooga/text-generation-webui))
+ -[RVC-Webui](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/])
    
 ---
 
