@@ -34,7 +34,7 @@ Repositorio del grupo 1 para el proyecto del ramo *Proyecto Inicial* – 2025.
 
 ## 🧩 Alcance del proyecto
 
-> Contestar preguntas simples, y resolver problemas matemáticos con voz de Miku.
+- Contestar preguntas simples, y resolver problemas matemáticos con voz de Miku.
 
 ---
 
@@ -84,20 +84,20 @@ ES NECESARIO EL USO DE UNA TARJETA GRAFICA NVIDIA PARA EL RVC, DE NO TENER ACCES
 DESDE EL PC (PARA EJECUCIÓN CORRECTA DE PROGRAMAS PERTINENTES)
 
 Descargar aplicaciones necesarias
-Python 3.11 (IMPORTANTISIMO QUE SEA 3.11 PARA EVITAR PROBLEMAS DE COMPATIBILIDAD)
-Oogabooga (O Text-generation-webui) https://github.com/oobabooga/text-generation-webui/releases
-RVC WEB-UI https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
+-Python 3.11 (IMPORTANTÍSIMO QUE SEA 3.11 PARA EVITAR PROBLEMAS DE COMPATIBILIDAD)
+-Oogabooga (O Text-generation-webui) https://github.com/oobabooga/text-generation-webui/releases
+-RVC WEB-UI https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI
 
 Descargar archivos para que las aplicaciones descargadas funcionen
 
-Oogabooga (Text-generation-webui) - Oogabooga necesita un LLM para poder generar respuestas, el LLM es a elección, pero durante el desarrollo se usó mistral 7b-instruct (Descargable aquí: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)
+Oogabooga (Text-generation-webui)  (Oogabooga necesita un LLM para poder generar respuestas, el LLM es a elección, pero durante el desarrollo se usó mistral 7b) instruct (Descargable aquí: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2)
 Poner el LLM descargado en text-generation-webui-main\user_data\models
 
 RVC WEB-UI - Para hacer funcionar el RVC necesitas un voicemodel .pth y .index, nosotros usamos un voicemodel de Hatsune Miku descargado desde weights.com (descargable aqui https://www.weights.com/es/models/clwyirbzw007z10ujjnx3g8ff)
 
 El archivo .rar vendrá con 2 archivos, poner el .pth en RVC1006Nvidia\assets\weights y el .index en RVC1006Nvidia\logs
 
-En la carpeta de Oogabooga y RVC WEB-UI ejecutar ''pip install -r requirements.txt'' para descargar las librerias correspondientes, Luego ejecutar ''pip install openai-whisper sounddevice numpy scipy requests TTS soundfile'' para descargar librerias necesarias para el pipeline
+En la carpeta de Oogabooga y RVC WEB-UI ejecutar ''pip install -r requirements.txt'' para descargar las librerias correspondientes, Luego ejecutar ''pip install openai-whisper sounddevice numpy scipy requests TTS soundfile'' para descargar librerías necesarias para el pipeline
 
 Una vez tenemos todo instalado, ejecutar oogabooga con --api --listen y aplicar el LLM que descargaste, una vez tenemos oogabooga funcionando, ejecutar RVC-WEBUI.
 
@@ -140,6 +140,7 @@ enjoy!
 ## 📌 Notas adicionales
 
 - Quedó pendiente conectar un altavoz y micrófono a la raspi para que no dependiera directamente del PC
+- Se consideró la idea de cambiar la imagen estática de Miku por un GIF para que se moviera al hablar
 
 ---
 
